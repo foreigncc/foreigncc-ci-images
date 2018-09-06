@@ -1,0 +1,28 @@
+
+FROM @OS_NAME@:@OS_VER@
+
+MAINTAINER foreigncc foreigncc@fastmail.com
+
+RUN set -xe; \
+    # CentOS systemd issue (on CentOS 7.0 7.1) \
+    # See: https://stackoverflow.com/questions/36630718/docker-as-a-builder-cant-install-systemd-header-files \
+    if [ "@OS_NAME@" = "centos" ]; then \
+        yum swap -y fakesystemd systemd || true; \
+    fi; \
+    # Enable epel source for CentOS \
+    if [ "@OS_NAME@" = "centos" ]; then \
+        yum install -y epel-release; \
+    fi; \
+    yum makecache; \
+    yum groupinstall -y "Development tools"; \
+    yum install -y wget which cmake clang `#zeromq3-devel`; \
+    if [ "@OS_NAME@" = "centos" ]; then \
+        # Install newer gcc/g++ if c++11 not available \
+        echo "int main() { return 0; }" >/tmp/test.cpp; \
+        if g++ -o /dev/null /tmp/test.cpp && ! g++ -o /dev/null -std=c++11 /tmp/test.cpp; then \
+            wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo; \
+            yum install -y devtoolset-2-gcc devtoolset-2-binutils devtoolset-2-gcc-c++; \
+        fi; \
+        rm -f /tmp/test.cpp; \
+    fi;
+

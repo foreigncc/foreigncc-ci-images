@@ -1,0 +1,12 @@
+
+FROM @OS_NAME@:@OS_VER@
+
+MAINTAINER foreigncc foreigncc@fastmail.com
+
+ENV DEBIAN_FRONTEND "noninteractive"
+
+RUN set -xe; \
+    apt-get update -yyq; \
+    apt-get install -yyq build-essential clang cmake; \
+    rm -rf /var/lib/apt/lists
+

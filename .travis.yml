@@ -1,0 +1,52 @@
+language: cpp
+
+os: linux  # Ubuntu 14.04
+sudo: required
+dist: trusty
+env:
+  global:
+  matrix:
+    # ==== fedora ====
+    - OS_NAME=fedora OS_VER=26
+    - OS_NAME=fedora OS_VER=27
+    - OS_NAME=fedora OS_VER=28
+    # ==== ubuntu ====
+    - OS_NAME=ubuntu OS_VER=14.04
+    - OS_NAME=ubuntu OS_VER=16.04
+    - OS_NAME=ubuntu OS_VER=18.04
+    # ==== debian ====
+    - OS_NAME=debian OS_VER=7
+    - OS_NAME=debian OS_VER=8
+    - OS_NAME=debian OS_VER=9
+    # ==== centos ====
+    - OS_NAME=centos OS_VER=6
+    - OS_NAME=centos OS_VER=6.6
+    - OS_NAME=centos OS_VER=6.7
+    - OS_NAME=centos OS_VER=6.8
+    - OS_NAME=centos OS_VER=6.9
+    - OS_NAME=centos OS_VER=6.10
+    - OS_NAME=centos OS_VER=7
+    - OS_NAME=centos OS_VER=7.0.1406
+    - OS_NAME=centos OS_VER=7.1.1503
+    - OS_NAME=centos OS_VER=7.2.1511
+    - OS_NAME=centos OS_VER=7.3.1611
+    - OS_NAME=centos OS_VER=7.4.1708
+    - OS_NAME=centos OS_VER=7.5.1804
+git:
+  #depth: 1  # "git clone --depth=1" will cause strange failure when "git checkout"
+             # fatal: reference is not a tree: xxx
+  submodules: false
+branches:
+  except:
+    - /^t(e)?mp/
+
+script:
+  - ./build.sh
+
+notifications:
+  email:
+    on_success: always
+    on_failure: always
+    recipients:
+      - foreigncc@fastmail.com
+

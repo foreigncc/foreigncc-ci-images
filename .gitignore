@@ -1,0 +1,6 @@
+
+# Ignore JetBrains project
+/.idea/
+
+# Build directory
+/build/
